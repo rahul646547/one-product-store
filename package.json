@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node src/server.js",
     "dev": "nodemon src/server.js",
-    "build": "npx prisma migrate deploy",
+    "build": "npx prisma migrate deploy --schema=backend/prisma/schema.prisma",
     "prisma": "prisma"
   },
   "prisma": {
