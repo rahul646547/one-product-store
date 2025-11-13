@@ -120,13 +120,6 @@
     }
     .buy-now:hover { background: var(--accent-hover); }
 
-    .add-cart {
-      background: #fff;
-      border: 2px solid #ccc;
-      color: #111;
-    }
-    .add-cart:hover { border-color: var(--accent); color: var(--accent); }
-
     #status {
       margin-top: 12px;
       font-weight: 600;
@@ -168,7 +161,8 @@
 
 <script>
 (async function(){
-  const productRes = await fetch('/product');
+  const apiBase = window.location.origin; // ensures correct URL in production
+  const productRes = await fetch(apiBase + '/product');
   if(!productRes.ok){
     document.getElementById('productTitle').textContent = 'Error loading product';
     return;
@@ -189,7 +183,7 @@
   document.getElementById('buyNowBtn').addEventListener('click', async ()=>{
     if(product.inventory === 0){ alert('Product out of stock'); return; }
     document.getElementById('status').textContent = 'Redirecting to checkout…';
-    const res = await fetch('/create-checkout-session', {
+    const res = await fetch(apiBase + '/create-checkout-session', {
       method:'POST',
       headers:{'Content-Type':'application/json'},
       body: JSON.stringify({ 
@@ -199,12 +193,13 @@
         cancelUrl: window.location.href + '?canceled=1' 
       })
     });
-    const {url, error} = await res.json();
-    if(error){ document.getElementById('status').textContent = 'Error: ' + error; return; }
-    window.location = url;
+    const data = await res.json();
+    if(data.error){ 
+      document.getElementById('status').textContent = 'Error: ' + data.error; 
+      return; 
+    }
+    window.location = data.url;
   });
-
-  document.getElementById('addCartBtn').addEventListener('click', ()=>{ alert('Added to cart (demo)'); });
 })();
 </script>
 </body>
