@@ -2,17 +2,19 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
+
 const app = express();
 
-// Stripe webhook must receive raw body; route handles its own bodyParser
+// Middleware
+app.use(cors());
+app.use(express.json());
+
+// --- Stripe webhook (needs raw body, so it handles its own body parser) ---
 const webhookRoute = require('./routes/webhook');
 app.use('/webhook', webhookRoute);
 
-// JSON parser for other routes
-app.use(express.json());
-app.use(cors()); // allow cross-origin requests
-
-// App routes
+// --- API Routes ---
 const productRoute = require('./routes/product');
 const checkoutRoute = require('./routes/checkout');
 const adminRoute = require('./routes/admin');
@@ -21,9 +23,25 @@ app.use('/product', productRoute);
 app.use('/create-checkout-session', checkoutRoute);
 app.use('/admin', adminRoute);
 
-// Serve static frontend files (index.html, admin.html)
-app.use(express.static('frontend'));
+// --- Serve Frontend ---
+const frontendPath = path.join(__dirname, '../frontend');
+app.use(express.static(frontendPath));
 
-// Start
+// Serve index.html for root
+app.get('/', (req, res) => {
+  res.sendFile(path.join(frontendPath, 'index.html'));
+});
+
+// Serve admin.html for /admin-panel route (optional)
+app.get('/admin-panel', (req, res) => {
+  res.sendFile(path.join(frontendPath, 'admin.html'));
+});
+
+// Catch-all: redirect any unknown routes to frontend
+app.get('*', (req, res) => {
+  res.sendFile(path.join(frontendPath, 'index.html'));
+});
+
+// Start server
 const port = process.env.PORT || 10000;
 app.listen(port, () => console.log(`✅ Server running on port ${port}`));
