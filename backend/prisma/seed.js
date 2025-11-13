@@ -2,6 +2,8 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
 async function main() {
+  console.log('Seeding product...');
+  
   await prisma.product.create({
     data: {
       title: "Test Product",
@@ -11,8 +13,15 @@ async function main() {
       inventory: 10
     }
   });
+
+  console.log('Seed completed!');
 }
 
 main()
-  .catch(e => console.error(e))
-  .finally(async () => await prisma.$disconnect());
+  .catch(e => {
+    console.error('Seed error:', e);
+    process.exit(1); // ensures Render sees failure if seed fails
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
+  });
