@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard</title>
+<style>
+  body { font-family: system-ui, sans-serif; margin: 24px; background: #f5f7fb; color: #111; }
+  table { width: 100%; border-collapse: collapse; margin-top: 24px; }
+  th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+  th { background: #0066ff; color: #fff; }
+  tr:nth-child(even) { background: #f0f2f5; }
+  button { padding: 4px 8px; cursor: pointer; border: none; border-radius: 6px; background: #0066ff; color: #fff; }
+  button:disabled { background: #aaa; cursor: default; }
+</style>
+</head>
+<body>
+<h1>Admin Dashboard — Orders</h1>
+<table>
+  <thead>
+    <tr>
+      <th>Order ID</th>
+      <th>Product</th>
+      <th>Quantity</th>
+      <th>Customer Email</th>
+      <th>Status</th>
+      <th>Created At</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody id="ordersBody"></tbody>
+</table>
+
+<script>
+async function loadOrders() {
+  const res = await fetch('/admin/orders');
+  const orders = await res.json();
+
+  const tbody = document.getElementById('ordersBody');
+  tbody.innerHTML = '';
+
+  orders.forEach(order => {
+    const item = JSON.parse(order.items)[0];
+    const tr = document.createElement('tr');
+
+    tr.innerHTML = `
+      <td>${order.id}</td>
+      <td>${item?.title || 'N/A'}</td>
+      <td>${item?.quantity || 1}</td>
+      <td>${order.customerEmail || 'N/A'}</td>
+      <td>${order.status}</td>
+      <td>${new Date(order.createdAt).toLocaleString()}</td>
+      <td>
+        <button onclick="markShipped('${order.id}', this)" ${order.status === 'shipped' ? 'disabled' : ''}>
+          ${order.status === 'shipped' ? 'Shipped' : 'Mark as Shipped'}
+        </button>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+async function markShipped(orderId, btn) {
+  if (!confirm('Mark this order as shipped?')) return;
+
+  try {
+    const res = await fetch(`/admin/orders/${orderId}/ship`, { method: 'PATCH' });
+    const data = await res.json();
+
+    if (data.success) {
+      btn.textContent = 'Shipped';
+      btn.disabled = true;
+      const row = btn.closest('tr');
+      row.cells[4].textContent = 'shipped';
+    } else {
+      alert('Failed to update order');
+    }
+  } catch (err) {
+    console.error(err);
+    alert('Error updating order');
+  }
+}
+
+loadOrders();
+</script>
+</body>
+</html>
