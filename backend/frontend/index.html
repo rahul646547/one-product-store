@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>giveU – Premium Product</title>
+  <title>giveU – Premium Trimmer</title>
 
   <style>
     :root {
@@ -14,16 +14,12 @@
       --muted: #666;
       --border: #e5e5e5;
     }
-
     * { margin: 0; padding: 0; box-sizing: border-box; }
-
     body {
       font-family: Arial, Helvetica, sans-serif;
       background: var(--bg);
       color: var(--text);
     }
-
-    /* HEADER */
     .header {
       width: 100%;
       padding: 16px 24px;
@@ -32,8 +28,6 @@
       font-weight: bold;
       color: var(--orange-dark);
     }
-
-    /* MAIN PRODUCT SECTION */
     .container {
       max-width: 1100px;
       margin: 20px auto;
@@ -41,19 +35,16 @@
       display: flex;
       gap: 30px;
     }
-
     .img-box {
       flex: 1;
       border: 1px solid var(--border);
       padding: 16px;
       border-radius: 10px;
     }
-
     .img-box img {
       width: 100%;
       border-radius: 10px;
     }
-
     .details {
       flex: 1.2;
       display: flex;
@@ -61,36 +52,28 @@
       gap: 18px;
       padding-right: 20px;
     }
-
     .title {
       font-size: 2rem;
       font-weight: 700;
     }
-
     .price {
       font-size: 1.8rem;
       color: var(--orange-dark);
       font-weight: 700;
     }
-
     .description {
       font-size: 1rem;
       color: var(--muted);
       line-height: 1.5;
     }
-
-    /* STOCK + TIMER */
     .stock { font-size: 1rem; color: #b12704; font-weight: 700; }
     .timer { font-size: 1rem; color: #cc0000; font-weight: 700; }
-
-    /* QUANTITY */
     .qty-box {
       display: flex;
       align-items: center;
       gap: 10px;
       margin-top: 10px;
     }
-
     .qty-btn {
       width: 32px;
       height: 32px;
@@ -100,13 +83,19 @@
       cursor: pointer;
       border-radius: 6px;
     }
-
     .qty-btn:hover {
       border-color: var(--orange);
       color: var(--orange);
     }
-
-    /* BUY BUTTON */
+    #quantity {
+      width: 50px;
+      text-align: center;
+      padding: 10px;
+      font-size: 18px;
+      margin: 0 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
     .buy-btn {
       width: 100%;
       padding: 16px;
@@ -120,19 +109,14 @@
       margin-top: 16px;
       transition: 0.2s;
     }
-
     .buy-btn:hover { background: var(--orange-dark); }
-
     #status { font-weight: 600; margin-top: 10px; }
-
-    /* TRUST BADGES */
     .trust {
       margin-top: 20px;
       display: flex;
       gap: 20px;
       flex-wrap: wrap;
     }
-
     .trust div {
       flex: 1;
       min-width: 140px;
@@ -143,22 +127,16 @@
       text-align: center;
       font-size: 0.9rem;
     }
-
-    /* REVIEWS */
     .reviews {
       max-width: 1000px;
       margin: 40px auto;
       padding: 20px;
     }
-
     .review {
       border-bottom: 1px solid var(--border);
       padding: 14px 0;
     }
-
     .review strong { font-size: 1rem; }
-
-    /* FOOTER */
     .footer {
       margin-top: 40px;
       padding: 20px;
@@ -167,8 +145,6 @@
       font-size: 0.95rem;
       color: var(--muted);
     }
-
-    /* RESPONSIVE */
     @media (max-width: 900px) {
       .container { flex-direction: column; }
     }
@@ -177,10 +153,8 @@
 
 <body>
 
-  <!-- HEADER -->
   <div class="header">giveU</div>
 
-  <!-- PRODUCT SECTION -->
   <div class="container">
     <div class="img-box">
       <img id="productImage" src="" alt="Product image">
@@ -194,18 +168,15 @@
       <div class="stock" id="stockNote"></div>
       <div class="timer" id="timer"></div>
 
-      <!-- QUANTITY -->
       <div class="qty-box">
         <button class="qty-btn" id="decQty">-</button>
         <div id="qtyVal">1</div>
         <button class="qty-btn" id="incQty">+</button>
       </div>
 
-      <!-- BUY BUTTON -->
       <button class="buy-btn" id="buyNowBtn">Buy Now</button>
       <div id="status"></div>
 
-      <!-- TRUST BADGES -->
       <div class="trust">
         <div>✔ Secure Checkout</div>
         <div>✔ Money-Back Guarantee</div>
@@ -215,7 +186,6 @@
     </div>
   </div>
 
-  <!-- REVIEWS -->
   <div class="reviews">
     <h2>Customer Reviews</h2>
 
@@ -235,73 +205,76 @@
     </div>
   </div>
 
-  <!-- FOOTER -->
   <div class="footer">
     © giveU — All Rights Reserved<br>
     Contact: support@giveu.store
   </div>
 
 <script>
-/* TIMER */
-function startTimer() {
-  let sec = 900; // 15 minutes
-  const el = document.getElementById("timer");
+  /* TIMER */
+  function startTimer() {
+    let sec = 900; // 15 minutes
+    const el = document.getElementById("timer");
+    setInterval(() => {
+      let m = Math.floor(sec / 60);
+      let s = sec % 60;
+      el.textContent = `Limited Offer Ends In: ${m}:${s < 10 ? '0'+s : s}`;
+      sec--;
+      if (sec < 0) sec = 900;
+    }, 1000);
+  }
+  startTimer();
 
-  setInterval(() => {
-    let m = Math.floor(sec / 60);
-    let s = sec % 60;
-    el.textContent = `Limited Offer Ends In: ${m}:${s < 10 ? '0'+s : s}`;
-    sec--;
-    if(sec <= 0) sec = 900; // restart
-  }, 1000);
-}
-startTimer();
+  /* PRODUCT & CHECKOUT LOGIC */
+  (async function(){
+    const apiBase = window.location.origin;
+    const productRes = await fetch(apiBase + "/product");
+    const product = await productRes.json();
 
-/* PRODUCT FETCH + CHECKOUT */
-(async function(){
-  const apiBase = window.location.origin;
+    document.getElementById("productTitle").textContent = product.title;
+    document.getElementById("productDesc").textContent = product.description;
+    document.getElementById("productImage").src = product.imageUrl;
 
-  const productRes = await fetch(apiBase + "/product");
-  const product = await productRes.json();
+    let basePrice = 200; // rupees
+    document.getElementById("productPrice").textContent = "₹" + basePrice.toFixed(2);
 
-  document.getElementById("productTitle").textContent = product.title;
-  document.getElementById("productDesc").textContent = product.description;
-  document.getElementById("productPrice").textContent =
-    "₹" + (product.price / 100).toFixed(2);
-  document.getElementById("productImage").src = product.imageUrl;
+    document.getElementById("stockNote").textContent = product.inventory + " left in stock";
 
-  document.getElementById("stockNote").textContent =
-    product.inventory + " left in stock";
+    let qty = 1;
+    const qtyVal = document.getElementById("qtyVal");
 
-  let qty = 1;
-  const qtyVal = document.getElementById("qtyVal");
-
-  document.getElementById("incQty").addEventListener("click", () => {
-    if (qty < product.inventory) qty++;
-    qtyVal.textContent = qty;
-  });
-
-  document.getElementById("decQty").addEventListener("click", () => {
-    if (qty > 1) qty--;
-    qtyVal.textContent = qty;
-  });
-
-  document.getElementById("buyNowBtn").addEventListener("click", async () => {
-    const res = await fetch(apiBase + "/create-checkout-session", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        productId: product.id,
-        quantity: qty,
-        successUrl: window.location.href + "?success=1",
-        cancelUrl: window.location.href + "?canceled=1",
-      }),
+    document.getElementById("incQty").addEventListener("click", ()=>{
+      if (qty < product.inventory) {
+        qty++;
+        qtyVal.textContent = qty;
+        document.getElementById("productPrice").textContent = "₹" + (basePrice * qty).toFixed(2);
+      }
     });
 
-    const data = await res.json();
-    if (data.url) window.location = data.url;
-  });
-})();
+    document.getElementById("decQty").addEventListener("click", ()=>{
+      if (qty > 1) {
+        qty--;
+        qtyVal.textContent = qty;
+        document.getElementById("productPrice").textContent = "₹" + (basePrice * qty).toFixed(2);
+      }
+    });
+
+    document.getElementById("buyNowBtn").addEventListener("click", async ()=>{
+      document.getElementById("status").textContent = "Redirecting…";
+      const res = await fetch(apiBase + "/create-checkout-session", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          productId: product.id,
+          quantity: qty,
+          successUrl: window.location.href + "?success=1",
+          cancelUrl: window.location.href + "?canceled=1"
+        })
+      });
+      const data = await res.json();
+      if (data.url) window.location = data.url;
+    });
+  })();
 </script>
 
 </body>
