@@ -2,27 +2,19 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
 async function main() {
-  console.log('Seeding product...');
-  
+  await prisma.product.deleteMany();
+
   await prisma.product.create({
     data: {
-      title: "Test Product",
-      description: "This is a test product",
-      price: 20000,
-      currency: "inr",
-      imageUrl: "https://via.placeholder.com/150",
-      inventory: 10
+      title: "Premium Hair Trimmer",
+      description: "High-quality professional trimmer with stainless steel blades.",
+      imageUrl: "https://your-image-link-here",
+      price: 20000, // 💰 200 INR → 200 * 100 = 20000 paise
+      inventory: 50
     }
   });
 
-  console.log('Seed completed!');
+  console.log("🌱 Database seeded with ₹200 product!");
 }
 
-main()
-  .catch(e => {
-    console.error('Seed error:', e);
-    process.exit(1); // ensures Render sees failure if seed fails
-  })
-  .finally(async () => {
-    await prisma.$disconnect();
-  });
+main().catch(e => console.error(e)).finally(() => prisma.$disconnect());
