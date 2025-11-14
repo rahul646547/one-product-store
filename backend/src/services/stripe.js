@@ -5,24 +5,25 @@ async function createCheckoutSession(product, quantity, successUrl, cancelUrl) {
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ['card'],
 
-    // ✅ Require billing info so Stripe collects email
     billing_address_collection: 'required',
 
     shipping_address_collection: {
       allowed_countries: ['US', 'CA', 'GB', 'IN', 'AU', 'DE']
     },
 
-    line_items: [{
-      price_data: {
-        currency: 'usd',
-        product_data: {
-          name: product.title,
-          images: [product.imageUrl]
+    line_items: [
+      {
+        price_data: {
+          currency: 'inr',        // 💰 IMPORTANT!
+          product_data: {
+            name: product.title,
+            images: [product.imageUrl]
+          },
+          unit_amount: product.price // 20000 (for ₹200)
         },
-        unit_amount: product.price
-      },
-      quantity
-    }],
+        quantity
+      }
+    ],
 
     mode: 'payment',
     success_url: successUrl,
