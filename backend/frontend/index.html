@@ -3,247 +3,306 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pet Needle Comb – One Product Store</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <title>giveU – Premium Product</title>
 
   <style>
     :root {
-      --accent: #0066ff;
-      --accent-hover: #0050d1;
+      --orange: #ff9900;
+      --orange-dark: #d98200;
+      --bg: #ffffff;
+      --text: #111;
       --muted: #666;
-      --bg: #f5f7fb;
-      --card-bg: #fff;
+      --border: #e5e5e5;
     }
 
-    * { box-sizing: border-box; margin:0; padding:0; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
     body {
-      font-family: 'Inter', system-ui, sans-serif;
+      font-family: Arial, Helvetica, sans-serif;
       background: var(--bg);
-      color: #111;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
+      color: var(--text);
+    }
+
+    /* HEADER */
+    .header {
+      width: 100%;
+      padding: 16px 24px;
+      border-bottom: 1px solid var(--border);
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: var(--orange-dark);
+    }
+
+    /* MAIN PRODUCT SECTION */
+    .container {
+      max-width: 1100px;
+      margin: 20px auto;
       padding: 20px;
-    }
-
-    .card {
-      background: var(--card-bg);
-      max-width: 1000px;
-      width: 100%;
       display: flex;
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-      transition: transform 0.2s ease;
+      gap: 30px;
     }
-    .card:hover { transform: translateY(-3px); }
 
-    .left, .right { flex: 1; }
-    .left img {
+    .img-box {
+      flex: 1;
+      border: 1px solid var(--border);
+      padding: 16px;
+      border-radius: 10px;
+    }
+
+    .img-box img {
       width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
+      border-radius: 10px;
     }
 
-    .right {
-      padding: 32px;
+    .details {
+      flex: 1.2;
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 18px;
+      padding-right: 20px;
     }
 
-    h1 {
+    .title {
       font-size: 2rem;
       font-weight: 700;
-      margin-bottom: 8px;
     }
 
     .price {
       font-size: 1.8rem;
+      color: var(--orange-dark);
       font-weight: 700;
-      color: var(--accent);
-      margin-bottom: 12px;
     }
 
-    p.description {
+    .description {
+      font-size: 1rem;
       color: var(--muted);
       line-height: 1.5;
-      margin-bottom: 16px;
     }
 
-    .stock-note {
-      font-size: 0.9rem;
-      color: #888;
-    }
+    /* STOCK + TIMER */
+    .stock { font-size: 1rem; color: #b12704; font-weight: 700; }
+    .timer { font-size: 1rem; color: #cc0000; font-weight: 700; }
 
-    .qty-controls {
+    /* QUANTITY */
+    .qty-box {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
+      margin-top: 10px;
     }
 
-    .qty-controls button {
-      width: 36px;
-      height: 36px;
-      border: 1px solid #ccc;
+    .qty-btn {
+      width: 32px;
+      height: 32px;
+      font-size: 1.2rem;
       background: #fff;
+      border: 1px solid var(--border);
       cursor: pointer;
       border-radius: 6px;
-      font-size: 1.2rem;
-      font-weight: 600;
-      transition: all 0.2s;
-    }
-    .qty-controls button:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
-
-    .controls {
-      display: flex;
-      gap: 16px;
-      margin-top: 20px;
     }
 
-    .controls button {
-      flex: 1;
-      padding: 14px;
-      font-size: 1rem;
-      font-weight: 700;
-      border-radius: 10px;
+    .qty-btn:hover {
+      border-color: var(--orange);
+      color: var(--orange);
+    }
+
+    /* BUY BUTTON */
+    .buy-btn {
+      width: 100%;
+      padding: 16px;
+      background: var(--orange);
       border: none;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    .buy-now {
-      background: var(--accent);
+      border-radius: 10px;
       color: #fff;
+      font-size: 1.3rem;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 16px;
+      transition: 0.2s;
     }
-    .buy-now:hover { background: var(--accent-hover); }
 
-    #status {
-      margin-top: 12px;
-      font-weight: 600;
+    .buy-btn:hover { background: var(--orange-dark); }
+
+    #status { font-weight: 600; margin-top: 10px; }
+
+    /* TRUST BADGES */
+    .trust {
+      margin-top: 20px;
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
     }
 
+    .trust div {
+      flex: 1;
+      min-width: 140px;
+      background: #fafafa;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      text-align: center;
+      font-size: 0.9rem;
+    }
+
+    /* REVIEWS */
+    .reviews {
+      max-width: 1000px;
+      margin: 40px auto;
+      padding: 20px;
+    }
+
+    .review {
+      border-bottom: 1px solid var(--border);
+      padding: 14px 0;
+    }
+
+    .review strong { font-size: 1rem; }
+
+    /* FOOTER */
+    .footer {
+      margin-top: 40px;
+      padding: 20px;
+      background: #f2f2f2;
+      text-align: center;
+      font-size: 0.95rem;
+      color: var(--muted);
+    }
+
+    /* RESPONSIVE */
     @media (max-width: 900px) {
-      .card { flex-direction: column; }
-      .left { min-height: 300px; }
+      .container { flex-direction: column; }
     }
-
   </style>
 </head>
 
 <body>
-  <div class="card">
-    <div class="left">
+
+  <!-- HEADER -->
+  <div class="header">giveU</div>
+
+  <!-- PRODUCT SECTION -->
+  <div class="container">
+    <div class="img-box">
       <img id="productImage" src="" alt="Product image">
     </div>
-    <div class="right">
-      <h1 id="productTitle">Loading…</h1>
+
+    <div class="details">
+      <div class="title" id="productTitle">Loading…</div>
       <div class="price" id="productPrice"></div>
-      <p class="description" id="productDesc"></p>
+      <div class="description" id="productDesc"></div>
 
-      <div class="stock-note" id="stockNote"></div>
+      <div class="stock" id="stockNote"></div>
+      <div class="timer" id="timer"></div>
 
-      <div class="qty-controls">
-        <button id="decQty">-</button>
-        <div id="qtyVal" style="min-width:36px; text-align:center;">1</div>
-        <button id="incQty">+</button>
+      <!-- QUANTITY -->
+      <div class="qty-box">
+        <button class="qty-btn" id="decQty">-</button>
+        <div id="qtyVal">1</div>
+        <button class="qty-btn" id="incQty">+</button>
       </div>
 
-      <div class="controls">
-        <button class="buy-now" id="buyNowBtn">Buy Now</button>
-      </div>
-
+      <!-- BUY BUTTON -->
+      <button class="buy-btn" id="buyNowBtn">Buy Now</button>
       <div id="status"></div>
+
+      <!-- TRUST BADGES -->
+      <div class="trust">
+        <div>✔ Secure Checkout</div>
+        <div>✔ Money-Back Guarantee</div>
+        <div>✔ Fast Shipping</div>
+        <div>✔ 24/7 Support</div>
+      </div>
     </div>
   </div>
 
+  <!-- REVIEWS -->
+  <div class="reviews">
+    <h2>Customer Reviews</h2>
+
+    <div class="review">
+      <strong>⭐⭐⭐⭐⭐ – Priya</strong>
+      <p>Very good quality! Fast delivery and works perfectly.</p>
+    </div>
+
+    <div class="review">
+      <strong>⭐⭐⭐⭐⭐ – Rahul</strong>
+      <p>Product is worth the price! Highly recommended.</p>
+    </div>
+
+    <div class="review">
+      <strong>⭐⭐⭐⭐ – Sneha</strong>
+      <p>I love it! The build quality is solid.</p>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    © giveU — All Rights Reserved<br>
+    Contact: support@giveu.store
+  </div>
+
 <script>
+/* TIMER */
+function startTimer() {
+  let sec = 900; // 15 minutes
+  const el = document.getElementById("timer");
+
+  setInterval(() => {
+    let m = Math.floor(sec / 60);
+    let s = sec % 60;
+    el.textContent = `Limited Offer Ends In: ${m}:${s < 10 ? '0'+s : s}`;
+    sec--;
+    if(sec <= 0) sec = 900; // restart
+  }, 1000);
+}
+startTimer();
+
+/* PRODUCT FETCH + CHECKOUT */
 (async function(){
   const apiBase = window.location.origin;
-  const productRes = await fetch(apiBase + '/product');
 
-  if(!productRes.ok){
-    document.getElementById('productTitle').textContent = 'Error loading product';
-    return;
-  }
-
+  const productRes = await fetch(apiBase + "/product");
   const product = await productRes.json();
 
-  // DOM refs
-  const titleEl = document.getElementById('productTitle');
-  const descEl = document.getElementById('productDesc');
-  const priceEl = document.getElementById('productPrice');
-  const imgEl = document.getElementById('productImage');
-  const stockEl = document.getElementById('stockNote');
-  const qtyVal = document.getElementById('qtyVal');
+  document.getElementById("productTitle").textContent = product.title;
+  document.getElementById("productDesc").textContent = product.description;
+  document.getElementById("productPrice").textContent =
+    "₹" + (product.price / 100).toFixed(2);
+  document.getElementById("productImage").src = product.imageUrl;
 
-  // Fill product
-  titleEl.textContent = product.title;
-  descEl.textContent = product.description;
-  imgEl.src = product.imageUrl;
-  stockEl.textContent = product.inventory > 0
-    ? product.inventory + ' left in stock'
-    : 'Out of stock';
+  document.getElementById("stockNote").textContent =
+    product.inventory + " left in stock";
 
   let qty = 1;
-  const basePrice = product.price; // in cents
+  const qtyVal = document.getElementById("qtyVal");
 
-  function updateDisplayPrice(){
-    const total = (basePrice * qty) / 100;
-    priceEl.textContent = '$' + total.toFixed(2);
-  }
-
-  updateDisplayPrice();
-
-  // Quantity logic
-  document.getElementById('incQty').addEventListener('click', ()=>{
-    if(qty < product.inventory){
-      qty++;
-      qtyVal.textContent = qty;
-      updateDisplayPrice();
-    }
+  document.getElementById("incQty").addEventListener("click", () => {
+    if (qty < product.inventory) qty++;
+    qtyVal.textContent = qty;
   });
 
-  document.getElementById('decQty').addEventListener('click', ()=>{
-    if(qty > 1){
-      qty--;
-      qtyVal.textContent = qty;
-      updateDisplayPrice();
-    }
+  document.getElementById("decQty").addEventListener("click", () => {
+    if (qty > 1) qty--;
+    qtyVal.textContent = qty;
   });
 
-  // Buy now
-  document.getElementById('buyNowBtn').addEventListener('click', async ()=>{
-    if(product.inventory === 0){
-      alert('Product out of stock');
-      return;
-    }
-
-    document.getElementById('status').textContent = 'Redirecting to checkout…';
-
-    const res = await fetch(apiBase + '/create-checkout-session', {
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
+  document.getElementById("buyNowBtn").addEventListener("click", async () => {
+    const res = await fetch(apiBase + "/create-checkout-session", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         productId: product.id,
         quantity: qty,
-        successUrl: window.location.href + '?success=1',
-        cancelUrl: window.location.href + '?canceled=1'
-      })
+        successUrl: window.location.href + "?success=1",
+        cancelUrl: window.location.href + "?canceled=1",
+      }),
     });
 
     const data = await res.json();
-    if(data.error){
-      document.getElementById('status').textContent = 'Error: ' + data.error;
-      return;
-    }
-
-    window.location = data.url;
+    if (data.url) window.location = data.url;
   });
-
 })();
 </script>
+
 </body>
 </html>
