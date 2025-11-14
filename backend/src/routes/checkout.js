@@ -11,13 +11,22 @@ router.post('/', async (req, res) => {
     if (!product) return res.status(404).json({ error: 'Product not found' });
     if (product.inventory < quantity) return res.status(400).json({ error: 'Insufficient stock' });
 
-    const session = await createCheckoutSession(product, quantity, successUrl, cancelUrl);
+    // ✔ Force the product price to ₹200
+    const FIXED_PRICE = 200 * 100; // amount in paisa for Stripe
+
+    // ✔ Inject updated price before sending to Stripe service
+    const updatedProduct = {
+      ...product,
+      price: FIXED_PRICE
+    };
+
+    const session = await createCheckoutSession(updatedProduct, quantity, successUrl, cancelUrl);
 
     await prisma.order.create({
       data: {
         stripeSessionId: session.id,
-        amountTotal: product.price * quantity,
-        currency: 'usd',
+        amountTotal: FIXED_PRICE * quantity, // ✔ Save correct total
+        currency: 'inr', // ✔ Correct currency
         items: JSON.stringify([{ productId, title: product.title, quantity }]),
         status: 'pending',
       },
