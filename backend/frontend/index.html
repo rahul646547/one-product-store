@@ -161,45 +161,88 @@
 
 <script>
 (async function(){
-  const apiBase = window.location.origin; // ensures correct URL in production
+  const apiBase = window.location.origin;
   const productRes = await fetch(apiBase + '/product');
+
   if(!productRes.ok){
     document.getElementById('productTitle').textContent = 'Error loading product';
     return;
   }
 
   const product = await productRes.json();
-  document.getElementById('productTitle').textContent = product.title;
-  document.getElementById('productDesc').textContent = product.description;
-  document.getElementById('productPrice').textContent = '$' + (product.price/100).toFixed(2);
-  document.getElementById('productImage').src = product.imageUrl;
-  document.getElementById('stockNote').textContent = product.inventory > 0 ? product.inventory + ' left in stock' : 'Out of stock';
+
+  // DOM refs
+  const titleEl = document.getElementById('productTitle');
+  const descEl = document.getElementById('productDesc');
+  const priceEl = document.getElementById('productPrice');
+  const imgEl = document.getElementById('productImage');
+  const stockEl = document.getElementById('stockNote');
+  const qtyVal = document.getElementById('qtyVal');
+
+  // Fill product
+  titleEl.textContent = product.title;
+  descEl.textContent = product.description;
+  imgEl.src = product.imageUrl;
+  stockEl.textContent = product.inventory > 0
+    ? product.inventory + ' left in stock'
+    : 'Out of stock';
 
   let qty = 1;
-  const qtyVal = document.getElementById('qtyVal');
-  document.getElementById('incQty').addEventListener('click', ()=>{ if(qty < product.inventory) qty++; qtyVal.textContent=qty; });
-  document.getElementById('decQty').addEventListener('click', ()=>{ if(qty>1) qty--; qtyVal.textContent=qty; });
+  const basePrice = product.price; // in cents
 
+  function updateDisplayPrice(){
+    const total = (basePrice * qty) / 100;
+    priceEl.textContent = '$' + total.toFixed(2);
+  }
+
+  updateDisplayPrice();
+
+  // Quantity logic
+  document.getElementById('incQty').addEventListener('click', ()=>{
+    if(qty < product.inventory){
+      qty++;
+      qtyVal.textContent = qty;
+      updateDisplayPrice();
+    }
+  });
+
+  document.getElementById('decQty').addEventListener('click', ()=>{
+    if(qty > 1){
+      qty--;
+      qtyVal.textContent = qty;
+      updateDisplayPrice();
+    }
+  });
+
+  // Buy now
   document.getElementById('buyNowBtn').addEventListener('click', async ()=>{
-    if(product.inventory === 0){ alert('Product out of stock'); return; }
+    if(product.inventory === 0){
+      alert('Product out of stock');
+      return;
+    }
+
     document.getElementById('status').textContent = 'Redirecting to checkout…';
+
     const res = await fetch(apiBase + '/create-checkout-session', {
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ 
-        productId: product.id, 
-        quantity: qty, 
-        successUrl: window.location.href + '?success=1', 
-        cancelUrl: window.location.href + '?canceled=1' 
+      body: JSON.stringify({
+        productId: product.id,
+        quantity: qty,
+        successUrl: window.location.href + '?success=1',
+        cancelUrl: window.location.href + '?canceled=1'
       })
     });
+
     const data = await res.json();
-    if(data.error){ 
-      document.getElementById('status').textContent = 'Error: ' + data.error; 
-      return; 
+    if(data.error){
+      document.getElementById('status').textContent = 'Error: ' + data.error;
+      return;
     }
+
     window.location = data.url;
   });
+
 })();
 </script>
 </body>
