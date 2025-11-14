@@ -14,12 +14,12 @@ async function createCheckoutSession(product, quantity, successUrl, cancelUrl) {
 
     line_items: [{
       price_data: {
-        currency: 'usd',
+        currency: 'inr',
         product_data: {
           name: product.title,
           images: [product.imageUrl]
         },
-        unit_amount: product.price
+        unit_amount: product.price*100
       },
       quantity
     }],
