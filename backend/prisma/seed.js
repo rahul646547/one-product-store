@@ -8,7 +8,8 @@ async function main() {
     data: {
       title: "Test Product",
       description: "This is a test product",
-      price: 1000,
+      price: 20000,
+      currency: "inr",
       imageUrl: "https://via.placeholder.com/150",
       inventory: 10
     }
